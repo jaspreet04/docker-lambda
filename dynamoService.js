@@ -15,10 +15,9 @@ if (IS_OFFLINE) {
 
 const DynamoDb = new AWS.DynamoDB.DocumentClient(options);
 const BOOKS_TABLE_NAME = process.env.BOOKS_TABLE_NAME;
-const MIN_KEY_LENGTH = 5;
 const MAX_KEY_LENGTH = 6;
 const KEY_ALLOWED_CHARACTERS = '0123456789abcdefghijklmnopqrstuvwxyz'
-const TTL = 86400 * 7; // increased the data expiration ot 7 days from 3
+const TTL = 86400 * 7;
 
 module.exports = {
   DynamoInsertBook: async (bookData) => {
@@ -121,10 +120,7 @@ async function InsertBook (bookData) {
 
 async function GetUniqueKey () {
 	var uniqueKey = '';
-	var NextLengthOfKey = MIN_KEY_LENGTH ;
-	var lengthOfKey = NextLengthOfKey <= MAX_KEY_LENGTH ? NextLengthOfKey : MAX_KEY_LENGTH ;
-	for (var i = lengthOfKey; i > 0; --i) uniqueKey += KEY_ALLOWED_CHARACTERS[Math.round(Math.random() * (KEY_ALLOWED_CHARACTERS.length - 1))];
-
+	for (var i = MAX_KEY_LENGTH; i > 0; --i) uniqueKey += KEY_ALLOWED_CHARACTERS[Math.round(Math.random() * (KEY_ALLOWED_CHARACTERS.length - 1))];
 	return uniqueKey;     
 }
 
